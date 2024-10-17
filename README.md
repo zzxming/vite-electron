@@ -23,6 +23,19 @@ export const serverHost = 'http://localhost';
 latestConfig.path = `http://localhost/electron-app/${latestConfig.path}`;
 ```
 
+```json
+// electron-builder.json5
+{
+  "publish": [
+    {
+      "provider": "generic",
+      // server host. use to download the upgrade package
+      "url": "https://localhost:3000/updater"
+    }
+  ]
+}
+```
+
 run command to start electron app
 
 ```bash
