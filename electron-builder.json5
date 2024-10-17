@@ -45,7 +45,7 @@
   "publish": [
     {
       "provider": "generic",
-      "url": "https://localhost/updater"
+      "url": "https://localhost:3000/updater"
     }
   ]
 }

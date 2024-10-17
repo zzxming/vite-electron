@@ -53,7 +53,7 @@ export default defineConfig(({ command }) => {
           input: 'electron/preload/index.ts',
           vite: {
             build: {
-              sourcemap: sourcemap ? 'inline' : undefined, // #332
+              sourcemap: sourcemap ? 'inline' : undefined,
               minify: isBuild,
               outDir: 'dist-electron/preload',
               rollupOptions: {
@@ -90,7 +90,7 @@ export default defineConfig(({ command }) => {
         port: 3333,
         proxy: {
           '/api': {
-            target: `${HOST}`,
+            target: `${HOST}:3000`,
             changeOrigin: true,
             rewrite: path => path.replace(/^\/api/, ''),
           },

@@ -5,7 +5,7 @@ import { app } from 'electron';
 
 export const __require = createRequire(import.meta.url);
 export const isDev = process.env.NODE_ENV === 'development';
-export const serverHost = 'http://localhost';
+export const serverHost = 'http://localhost:3000';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const appRoot = resolve(__dirname, '../../');

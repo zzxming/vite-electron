@@ -97,7 +97,7 @@ const main = async () => {
   consola.start('start to update latest info...');
   const latestYmlPath = resolve(distRoot, pkgInfo.version, 'latest.yml');
   const latestConfig = yaml.load(await readFile(latestYmlPath, { encoding: 'utf8' })) as Record<string, any>;
-  latestConfig.path = `http://localhost/electron-app/${latestConfig.path}`;
+  latestConfig.path = `http://localhost:3000/electron-app/${latestConfig.path}`;
   latestConfig.releaseDate = date;
   await writeFile(latestYmlPath, yaml.dump(latestConfig), { encoding: 'utf8' });
   consola.success('build success!');
