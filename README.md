@@ -26,6 +26,7 @@ latestConfig.path = `http://localhost/electron-app/${latestConfig.path}`;
 run command to start electron app
 
 ```bash
+pnpm i
 pnpm build:common
 pnpm dev
 ```
