@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["ESNext"],
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "utils",
+    "electron/main",
+    "electron/types.ts",
+    "electron-env.d.ts",
+    "vite.config.ts"
+  ]
+}

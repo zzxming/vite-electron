@@ -1,0 +1,23 @@
+@import 'element-plus/theme-chalk/el-loading.css';
+
+:root {
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
+
+html,
+body {
+  @apply bg-blue-50/80 min-w-[1500px] min-h-screen;
+}
+.el-table th {
+  @apply text-xs;
+}
+@import './scroll.less';

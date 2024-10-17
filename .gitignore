@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-electron
+dist-execute
+release
+out
+
+.vscode/.debug.env
+*.local
+.eslintcache
+auto-imports.d.ts
+components.d.ts
+unpack/**

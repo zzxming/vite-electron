@@ -1,0 +1,69 @@
+{
+  "name": "namdb",
+  "type": "module",
+  "version": "0.0.2",
+  "private": true,
+  "packageManager": "pnpm@9.9.0",
+  "description": "namdb",
+  "author": "zzxming",
+  "license": "MIT",
+  "main": "dist-electron/main/index.js",
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:3333/"
+    }
+  },
+  "scripts": {
+    "vscode:settings": "uvs",
+    "dev": "vite",
+    "build:vite": "vite build",
+    "lint": "eslint . --cache"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "utils": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.7.5",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1",
+    "@unocss/eslint-plugin": "^0.63.4",
+    "@unocss/reset": "^0.63.4",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@zzxming/eslint-config": "^0.3.1",
+    "async-validator": "^4.2.5",
+    "consola": "^3.2.3",
+    "electron": "^29.1.1",
+    "electron-builder": "^25.1.7",
+    "electron-updater": "^6.3.9",
+    "element-plus": "^2.8.4",
+    "eslint": "^9.12.0",
+    "eslint-plugin-vue": "^9.29.0",
+    "js-yaml": "^4.1.0",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "pkg": "^5.8.1",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.4.2",
+    "unocss": "^0.63.4",
+    "unplugin-auto-import": "^0.18.3",
+    "unplugin-vue-components": "^0.27.4",
+    "vite": "^5.1.5",
+    "vite-plugin-electron": "^0.28.4",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vue": "^3.5.0",
+    "vue-eslint-parser": "^9.4.3",
+    "vue-router": "^4.3.3"
+  },
+  "releaseDate": "2024-10-17T06:07:10.938Z",
+  "releaseLogs": [
+    "1. new patch version 99999999",
+    "2. new patch version 99999999",
+    "3. new patch version 99999999"
+  ],
+  "releaseName": "version minor (2024/10/17 14:07:10)"
+}
