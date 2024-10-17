@@ -36,7 +36,7 @@ export const checkUpdate = (mainWin: BrowserWindow) => {
     autoUpdater.requestHeaders = {
       elearch: process.arch,
     };
-    autoUpdater.setFeedURL(`${serverHost}/updater/namdb`);
+    autoUpdater.setFeedURL(`${serverHost}/updater/electron-app`);
     autoUpdater.fullChangelog = true;
     // auto download new version package
     autoUpdater.autoDownload = true;

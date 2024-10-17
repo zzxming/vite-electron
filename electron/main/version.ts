@@ -33,7 +33,7 @@ export const getVersion = async () => {
 
 export const downloadPatchVersion = (_versionInfo: UpdateInfo) => {
   return new Promise<string>((resolvePromise, reject) => {
-    axios.get(`${serverHost}/namdb/app.asar`, {
+    axios.get(`${serverHost}/electron-app/app.asar`, {
       responseType: 'stream',
     }).then((res) => {
       const writer = createWriteStream(asarTempPath);

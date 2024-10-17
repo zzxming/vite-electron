@@ -4,7 +4,7 @@ files:
     sha512: >-
       fDTon/p0LMp/YvzaDUQWSHLf1KxLv2dfIHIDoKpnVliVPmlUGJXoSNMizT36W5M3hywHkxtjjT6vPeImjKIoDQ==
     size: 86641722
-path: http://localhost/namdb/NAMDB-Windows-0.0.2-Setup.exe
+path: http://localhost/electron-app/NAMDB-Windows-0.0.2-Setup.exe
 sha512: >-
   fDTon/p0LMp/YvzaDUQWSHLf1KxLv2dfIHIDoKpnVliVPmlUGJXoSNMizT36W5M3hywHkxtjjT6vPeImjKIoDQ==
 releaseNotes: |-

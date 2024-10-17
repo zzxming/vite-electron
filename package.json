@@ -1,10 +1,10 @@
 {
-  "name": "namdb",
+  "name": "electron-app",
   "type": "module",
   "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@9.9.0",
-  "description": "namdb",
+  "description": "electron-app",
   "author": "zzxming",
   "license": "MIT",
   "main": "dist-electron/main/index.js",
