@@ -3,6 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { app, BrowserWindow, shell } from 'electron';
 import { indexHtml, isDev, preloadBundle, publicPath } from './constants';
+import { checkUpdate } from './update';
 import './ipcMainEvents';
 
 // Disable GPU Acceleration for Windows 7
@@ -62,6 +63,12 @@ async function createWindow() {
 
 app.whenReady().then(async () => {
   mainWin = await createWindow();
+  mainWin.on('show', () => {
+    // wait for window full show
+    setTimeout(async () => {
+      checkUpdate(mainWin);
+    }, 2000);
+  });
 });
 
 app.on('window-all-closed', () => {

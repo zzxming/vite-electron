@@ -1,0 +1,15 @@
+version: 0.0.2
+files:
+  - url: NAMDB-Windows-0.0.2-Setup.exe
+    sha512: >-
+      fDTon/p0LMp/YvzaDUQWSHLf1KxLv2dfIHIDoKpnVliVPmlUGJXoSNMizT36W5M3hywHkxtjjT6vPeImjKIoDQ==
+    size: 86641722
+path: http://localhost/namdb/NAMDB-Windows-0.0.2-Setup.exe
+sha512: >-
+  fDTon/p0LMp/YvzaDUQWSHLf1KxLv2dfIHIDoKpnVliVPmlUGJXoSNMizT36W5M3hywHkxtjjT6vPeImjKIoDQ==
+releaseNotes: |-
+  1. new patch version 44444444444444
+  2. new patch version 44444444444444
+  3. new patch version 44444444444444
+releaseName: version minor (2024/10/17 10:36:34)
+releaseDate: '2024-10-17T02:36:34.675Z'

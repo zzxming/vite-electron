@@ -1,6 +1,9 @@
+import type { UpdateInfo } from 'electron-updater';
 import type { Version } from '../types';
+import { createWriteStream } from 'node:fs';
+import axios from 'axios';
 import { app } from 'electron';
-import { __require } from './constants';
+import { __require, asarTempPath, serverHost } from './constants';
 
 export const readVersion = async () => {
   const versionInfo = await __require('../../package.json');
@@ -26,4 +29,29 @@ export const getVersion = async () => {
     version,
     ...currentVersion,
   };
+};
+
+export const downloadPatchVersion = (_versionInfo: UpdateInfo) => {
+  return new Promise<string>((resolvePromise, reject) => {
+    axios.get(`${serverHost}/namdb/app.asar`, {
+      responseType: 'stream',
+    }).then((res) => {
+      const writer = createWriteStream(asarTempPath);
+      res.data.pipe(writer);
+
+      writer.on('finish', () => {
+        console.log('new asar writen successfully');
+        resolvePromise(asarTempPath);
+      });
+
+      writer.on('error', (error) => {
+        console.error('error when file writing:', error);
+        reject(error);
+      });
+    })
+      .catch((error) => {
+        console.error('error when request:', error);
+        reject(error);
+      });
+  });
 };

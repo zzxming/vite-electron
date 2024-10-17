@@ -23,6 +23,22 @@ export const resourcesPath = isDev
     : resolve(dirname(app.getPath('exe')), 'resources');
 export const unpackPath = isDev ? resolve(appRoot, 'execute/dist-execute') : resolve(resourcesPath, 'unpack');
 
+export const configPath = resolve(appRoot, 'config');
+export const devUpdateLatestYml = resolve(configPath, 'dev-update.yml');
+
+export const asarTempPath = resolve(resourcesPath, `app.asar-temp`);
+export const logPath = app.getPath('logs');
+
+export const getReplaceAsarExc = () => {
+  const exeName = {
+    win32: 'replace-asar.exe',
+    darwin: 'replace-asar',
+    linux: 'replace-asar',
+  };
+
+  return exeName[process.platform as 'win32' | 'linux' | 'darwin'];
+};
+
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? resolve(appRoot, 'public')
