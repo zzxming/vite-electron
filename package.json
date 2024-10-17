@@ -17,6 +17,10 @@
     "vscode:settings": "uvs",
     "dev": "vite",
     "build:vite": "vite build",
+    "build:utils": "pnpm -C utils build",
+    "build:exec": "pnpm -C execute build",
+    "build:common": "pnpm build:utils && pnpm build:exec",
+    "build:electron": "tsx ./scripts/build.ts",
     "lint": "eslint . --cache"
   },
   "dependencies": {
