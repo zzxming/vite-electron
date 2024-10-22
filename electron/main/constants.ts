@@ -9,7 +9,7 @@ export const serverHost = import.meta.env.VITE_SERVER_HOST;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const appRoot = resolve(__dirname, '../../');
-
+export const pkgPath = resolve(appRoot, 'package.json');
 export const electronDist = resolve(appRoot, 'dist-electron');
 export const rendererDist = resolve(appRoot, 'dist');
 export const preloadBundle = resolve(electronDist, 'preload/index.mjs');

@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { isString, run } from 'utils';
-import { asarTempPath, devUpdateLatestYml, getReplaceAsarExc, isDev, serverHost, unpackPath } from './constants';
+import { __require, asarTempPath, devUpdateLatestYml, getReplaceAsarExc, isDev, pkgPath, serverHost, unpackPath } from './constants';
 import { currentLogPath, localLog } from './log';
 import { checkPatchVersion, downloadPatchVersion } from './version';
 
@@ -25,7 +25,7 @@ const replaceOldAsar = async () => {
   }
 };
 
-export const checkUpdate = (mainWin: BrowserWindow) => {
+export const checkUpdate = async (mainWin: BrowserWindow) => {
   try {
     if (isDev && !existsSync(devUpdateLatestYml)) return;
     if (isDev && !app.isPackaged) {
@@ -37,7 +37,8 @@ export const checkUpdate = (mainWin: BrowserWindow) => {
     autoUpdater.requestHeaders = {
       elearch: process.arch,
     };
-    autoUpdater.setFeedURL(`${serverHost}/updater/electron-app`);
+    const packageInfo = await __require(pkgPath);
+    autoUpdater.setFeedURL(`${serverHost}/updater/${packageInfo.name}`);
     autoUpdater.fullChangelog = true;
     // auto download new version package
     autoUpdater.autoDownload = true;
@@ -49,13 +50,20 @@ export const checkUpdate = (mainWin: BrowserWindow) => {
     // send a windows notify message if has new version package
     autoUpdater.checkForUpdatesAndNotify().catch();
     autoUpdater.on('error', (error) => {
+      mainWin.webContents.send('autoUpdater-error', error);
       localLog(`autoUpdater error: ${error.message}\n${error.stack}`);
     });
+    autoUpdater.on('checking-for-update', () => {
+      mainWin.webContents.send('autoUpdater-checking-for-update');
+      localLog(`autoUpdater started check update`);
+    });
     autoUpdater.on('update-available', (info) => {
-      mainWin.webContents.send('update-available', info);
+      mainWin.webContents.send('autoUpdater-update-available', info);
+      localLog(`autoUpdater update-available: \n${JSON.stringify(info, undefined, 2).slice(1, -1)}\n`);
     });
     autoUpdater.on('update-not-available', async (info) => {
-      mainWin.webContents.send('update-not-available', info);
+      mainWin.webContents.send('autoUpdater-update-not-available', info);
+      localLog(`autoUpdater update-not-available: \n${JSON.stringify(info, undefined, 2).slice(1, -1)}\n}`);
       updateVersionInfo = {
         name: info.releaseName || '',
         logs: isString(info.releaseNotes) ? info.releaseNotes.split('\n') : [],
@@ -63,21 +71,22 @@ export const checkUpdate = (mainWin: BrowserWindow) => {
       };
       isNewVersion = await checkPatchVersion(updateVersionInfo);
       if (isNewVersion) {
+        mainWin.webContents.send('autoUpdater-update-available', info);
         // increase update
-        await downloadPatchVersion(info).catch((error) => {
+        await downloadPatchVersion(info, mainWin).catch((error) => {
           localLog(`download patch version error: ${error.message}\n${error.stack}`);
         });
       }
     });
     autoUpdater.on('download-progress', (prog) => {
-      mainWin.webContents.send('download-progress', {
+      mainWin.webContents.send('autoUpdater-download-progress', {
         speed: Math.ceil(prog.bytesPerSecond / 1000),
         percent: Math.ceil(prog.percent),
       });
     });
-    autoUpdater.on('update-downloaded', (info: any) => {
-      console.log('update-downloaded', info);
-      mainWin.webContents.send('update-downloaded');
+    autoUpdater.on('update-downloaded', (_info) => {
+      mainWin.webContents.send('autoUpdater-downloaded');
+      mainWin.webContents.send('autoUpdater-update-major');
       // immediate install after download
       // autoUpdater.quitAndInstall();
     });
