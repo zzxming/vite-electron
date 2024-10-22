@@ -21,7 +21,13 @@ export const resourcesPath = isDev
   : process.platform === 'darwin'
     ? resolve(dirname(app.getPath('exe')), 'Contents/Resources')
     : resolve(dirname(app.getPath('exe')), 'resources');
-export const unpackPath = isDev ? resolve(appRoot, 'execute/dist-execute') : resolve(resourcesPath, 'unpack');
+
+export const platformDirName = {
+  win32: 'windows',
+  darwin: 'mac',
+  linux: 'linux',
+}[process.platform as 'win32' | 'linux' | 'darwin'];
+export const unpackPath = isDev ? resolve(appRoot, `execute/dist-execute/${platformDirName}`) : resolve(resourcesPath, 'unpack');
 
 export const configPath = resolve(appRoot, 'config');
 export const devUpdateLatestYml = resolve(configPath, 'dev-update.yml');
