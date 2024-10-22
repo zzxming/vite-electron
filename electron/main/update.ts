@@ -27,6 +27,7 @@ const replaceOldAsar = async () => {
 
 export const checkUpdate = (mainWin: BrowserWindow) => {
   try {
+    if (isDev && !existsSync(devUpdateLatestYml)) return;
     if (isDev && !app.isPackaged) {
       Object.defineProperty(app, 'isPackaged', {
         get: () => true,
