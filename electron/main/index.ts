@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import os from 'node:os';
 import path from 'node:path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, Menu, shell } from 'electron';
 import { indexHtml, isDev, preloadBundle, publicPath } from './constants';
 import { checkUpdate } from './update';
 import './ipcMainEvents';
@@ -20,7 +20,7 @@ if (!app.requestSingleInstanceLock()) {
 let mainWin: BrowserWindow;
 
 async function createWindow() {
-  // Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(null);
   const win = new BrowserWindow({
     title: 'Main window',
     width: 1516,
@@ -58,6 +58,7 @@ async function createWindow() {
     }
   });
 
+  win.maximize();
   return win;
 }
 
