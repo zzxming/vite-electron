@@ -1,14 +1,12 @@
-import { existsSync } from 'node:fs';
-import { appendFile, writeFile } from 'node:fs/promises';
+import { appendFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { ensureFile } from 'fs-extra';
 import { logPath } from './constants';
 
 export const currentLogPath = async () => {
   const day = new Date().toLocaleDateString().replaceAll('/', '-');
   const dayLogPath = resolve(logPath, `${day}.txt`);
-  if (!existsSync(dayLogPath)) {
-    await writeFile(dayLogPath, ``, { encoding: 'utf8' });
-  }
+  await ensureFile(dayLogPath);
   return dayLogPath;
 };
 export const localLog = async (data: any) => {

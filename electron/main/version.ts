@@ -3,6 +3,7 @@ import type { Version } from '../types';
 import { createWriteStream } from 'node:fs';
 import axios from 'axios';
 import { app } from 'electron';
+import { ensureFile } from 'fs-extra';
 import { __require, asarTempPath, serverHost } from './constants';
 
 export const readVersion = async () => {
@@ -35,7 +36,8 @@ export const downloadPatchVersion = (_versionInfo: UpdateInfo) => {
   return new Promise<string>((resolvePromise, reject) => {
     axios.get(`${serverHost}/electron-app/app.asar`, {
       responseType: 'stream',
-    }).then((res) => {
+    }).then(async (res) => {
+      await ensureFile(asarTempPath);
       const writer = createWriteStream(asarTempPath);
       res.data.pipe(writer);
 

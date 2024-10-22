@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import consola from 'consola';
 import dotenv from 'dotenv';
+import { ensureDir, readJson, writeJson } from 'fs-extra/esm';
 import yaml from 'js-yaml';
 import { rimraf } from 'rimraf';
 import { copyDir, getPackageManifest } from 'utils';
@@ -12,6 +13,7 @@ import { lintFiles } from './lint';
 import { run } from './utils';
 
 dotenv.config();
+
 interface PlatFormConfig {
   unpackPath: string;
   buildCmd: string;
@@ -35,9 +37,7 @@ const buildPlatform = async (platform: string) => {
 
   // copy unpack files to unpack dir
   consola.start(`start to build on ${platform}...`);
-  if (!existsSync(unpackRoot)) {
-    await mkdir(unpackRoot);
-  }
+  await ensureDir(unpackRoot);
   await copyDir(config.unpackPath, unpackRoot);
   // build electron package
   await run(`electron-builder`, config.buildCmd);
@@ -59,16 +59,14 @@ const main = async () => {
   await run(`pnpm`, `build:exec`);
   // add release info in builder config
   consola.start('start to write release infomation...');
-  const releaseLog = await readFile(releaseLogPath, { encoding: 'utf8' });
-  const { logs, name } = JSON.parse(releaseLog);
+  const { logs, name } = await readJson(releaseLogPath);
   const date = new Date().toISOString();
   const releaseInfo = {
     releaseNotes: logs.join('\n'),
     releaseName: `${name} (${new Date(date).toLocaleString()})`,
   };
-  await writeFile(releaseLogPath, JSON.stringify({ name, date, logs }, undefined, 2));
-  const buildConfigStr = await readFile(electronBuilderConfig, { encoding: 'utf8' });
-  const buildConfig = JSON.parse(buildConfigStr);
+  await writeJson(releaseLogPath, { name, date, logs }, { spaces: 2 });
+  const buildConfig = await readJson(electronBuilderConfig);
   buildConfig.win.releaseInfo = releaseInfo;
   buildConfig.mac.releaseInfo = releaseInfo;
   buildConfig.linux.releaseInfo = releaseInfo;
@@ -78,7 +76,8 @@ const main = async () => {
       url: `${process.env.VITE_SERVER_HOST}/updater`,
     },
   ];
-  await writeFile(electronBuilderConfig, JSON.stringify(buildConfig, undefined, 2));
+
+  await writeJson(electronBuilderConfig, buildConfig, { spaces: 2 });
   consola.success('release infomation added to builder config file!');
   // update release info in package.json
   const pkgInfo = getPackageManifest(projRoot);
@@ -86,7 +85,7 @@ const main = async () => {
   pkgInfo.releaseDate = date;
   pkgInfo.releaseLogs = logs;
   const rootPkg = resolve(projRoot, 'package.json');
-  await writeFile(rootPkg, JSON.stringify(pkgInfo, undefined, 2), { encoding: 'utf8' });
+  await writeJson(rootPkg, pkgInfo, { spaces: 2 });
   await lintFiles(rootPkg);
   consola.success('release infomation added to package.json!');
 
