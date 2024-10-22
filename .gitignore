@@ -4,6 +4,7 @@ dist-electron
 dist-execute
 release
 out
+resources
 
 .vscode/.debug.env
 *.local
