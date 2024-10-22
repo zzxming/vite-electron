@@ -1,6 +1,6 @@
 import originAxios from 'axios';
 
-const baseURL = import.meta.env.MODE === 'development' ? '/api' : 'http://localhost';
+const baseURL = import.meta.env.DEV ? '/api' : import.meta.env.VITE_SERVER_HOST;
 export const axios = originAxios.create({
   baseURL,
 });

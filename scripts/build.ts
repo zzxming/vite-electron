@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import consola from 'consola';
+import dotenv from 'dotenv';
 import yaml from 'js-yaml';
 import { rimraf } from 'rimraf';
 import { copyDir, getPackageManifest } from 'utils';
@@ -10,6 +11,7 @@ import { configRoot, distRoot, electronBuilderConfig, execDist, projRoot, unpack
 import { lintFiles } from './lint';
 import { run } from './utils';
 
+dotenv.config();
 interface PlatFormConfig {
   unpackPath: string;
   buildCmd: string;
@@ -43,6 +45,9 @@ const buildPlatform = async (platform: string) => {
 };
 
 const main = async () => {
+  if (!process.env.VITE_SERVER_HOST) {
+    throw new Error('please set VITE_SERVER_HOST env first!');
+  }
   const platforms = process.argv.slice(2);
   if (platforms.length === 0) {
     platforms.push('win');
@@ -67,6 +72,12 @@ const main = async () => {
   buildConfig.win.releaseInfo = releaseInfo;
   buildConfig.mac.releaseInfo = releaseInfo;
   buildConfig.linux.releaseInfo = releaseInfo;
+  buildConfig.publish = [
+    {
+      provider: 'generic',
+      url: `${process.env.VITE_SERVER_HOST}/updater`,
+    },
+  ];
   await writeFile(electronBuilderConfig, JSON.stringify(buildConfig, undefined, 2));
   consola.success('release infomation added to builder config file!');
   // update release info in package.json
@@ -97,7 +108,7 @@ const main = async () => {
   consola.start('start to update latest info...');
   const latestYmlPath = resolve(distRoot, pkgInfo.version, 'latest.yml');
   const latestConfig = yaml.load(await readFile(latestYmlPath, { encoding: 'utf8' })) as Record<string, any>;
-  latestConfig.path = `http://localhost:3000/electron-app/${latestConfig.path}`;
+  latestConfig.path = `${process.env.VITE_SERVER_HOST}/${pkgInfo.name}/${latestConfig.path}`;
   latestConfig.releaseDate = date;
   await writeFile(latestYmlPath, yaml.dump(latestConfig), { encoding: 'utf8' });
   consola.success('build success!');

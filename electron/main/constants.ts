@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { app } from 'electron';
 
 export const __require = createRequire(import.meta.url);
-export const isDev = process.env.NODE_ENV === 'development';
-export const serverHost = 'http://localhost:3000';
+export const isDev = import.meta.env.DEV;
+export const serverHost = import.meta.env.VITE_SERVER_HOST;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const appRoot = resolve(__dirname, '../../');
@@ -38,8 +38,3 @@ export const getReplaceAsarExc = () => {
 
   return exeName[process.platform as 'win32' | 'linux' | 'darwin'];
 };
-
-const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
-  ? resolve(appRoot, 'public')
-  : rendererDist;

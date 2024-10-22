@@ -39,6 +39,7 @@
     "@zzxming/eslint-config": "^0.3.1",
     "async-validator": "^4.2.5",
     "consola": "^3.2.3",
+    "dotenv": "^16.4.5",
     "electron": "^29.1.1",
     "electron-builder": "^25.1.7",
     "electron-updater": "^6.3.9",

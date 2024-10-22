@@ -3,6 +3,7 @@ import { copyFile, mkdir, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 interface Manifest {
+  name: string;
   version: string;
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import dotenv from 'dotenv';
 import UnoCSS from 'unocss/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
@@ -12,7 +13,7 @@ import electron from 'vite-plugin-electron/simple';
 import pkg from './package.json';
 // import renderer from 'vite-plugin-electron-renderer'
 
-const HOST = `http://localhost`;
+dotenv.config();
 
 export default defineConfig(({ command }) => {
   fs.rmSync('dist-electron', { recursive: true, force: true });
@@ -20,6 +21,24 @@ export default defineConfig(({ command }) => {
   const isServe = command === 'serve';
   const isBuild = command === 'build';
   const sourcemap = isServe;
+
+  const server: CommonServerOptions = {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: process.env.VITE_DEV_SERVER_URL,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  };
+  if (process.env.VSCODE_DEBUG) {
+    const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL);
+    Object.assign(server, {
+      host: url.hostname,
+      port: +url.port,
+    });
+  }
 
   return {
     plugins: [
@@ -85,26 +104,7 @@ export default defineConfig(({ command }) => {
         '@': fileURLToPath(new URL('src', import.meta.url)),
       },
     },
-    server: (() => {
-      const config: CommonServerOptions = {
-        port: 3333,
-        proxy: {
-          '/api': {
-            target: `${HOST}:3000`,
-            changeOrigin: true,
-            rewrite: path => path.replace(/^\/api/, ''),
-          },
-        },
-      };
-      if (process.env.VSCODE_DEBUG) {
-        const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL);
-        Object.assign(config, {
-          host: url.hostname,
-          port: +url.port,
-        });
-      }
-      return config;
-    })(),
+    server,
     clearScreen: false,
   };
 });

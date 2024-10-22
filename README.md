@@ -2,38 +2,24 @@
 
 Please replace the corresponding path in the following file
 
-```ts
-// src/assets/api/axios.ts
-
-// server host. use in front request
-const baseURL = import.meta.env.MODE === 'development' ? '/api' : 'http://localhost';
-```
-
-```ts
-// electron/main/constants.ts
-
-// server host. use in request upgrade information and download the upgrade package
-export const serverHost = 'http://localhost';
+```sh
+# .env
+# server host
+VITE_SERVER_HOST=http://localhost:3000
 ```
 
 ```ts
 // scripts/build.ts
 
-// server host. write in latest.yml to download the upgrade package
-latestConfig.path = `http://localhost/electron-app/${latestConfig.path}`;
-```
-
-```json
-// electron-builder.json5
-{
-  "publish": [
-    {
-      "provider": "generic",
-      // server host. use to download the upgrade package
-      "url": "https://localhost:3000/updater"
-    }
-  ]
-}
+// new version vertify path. default /updater
+buildConfig.publish = [
+  {
+    provider: 'generic',
+    url: `${process.env.VITE_SERVER_HOST}/updater`,
+  },
+];
+// new version package download path. default use pakcage name
+latestConfig.path = `${process.env.VITE_SERVER_HOST}/${pkgInfo.name}/${latestConfig.path}`;
 ```
 
 run command to start electron app
