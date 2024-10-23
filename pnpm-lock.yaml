@@ -11,6 +11,12 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
+      electron-updater:
+        specifier: ^6.3.9
+        version: 6.3.9
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.2.0
       utils:
         specifier: workspace:^
         version: link:utils
@@ -60,9 +66,6 @@ importers:
       electron-builder:
         specifier: ^25.1.7
         version: 25.1.7(electron-builder-squirrel-windows@25.1.7(dmg-builder@25.1.7))
-      electron-updater:
-        specifier: ^6.3.9
-        version: 6.3.9
       element-plus:
         specifier: ^2.8.4
         version: 2.8.5(vue@3.5.12(typescript@5.6.3))
@@ -72,9 +75,6 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.29.0
         version: 9.29.0(eslint@9.12.0(jiti@1.21.6))
-      fs-extra:
-        specifier: ^11.2.0
-        version: 11.2.0
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
