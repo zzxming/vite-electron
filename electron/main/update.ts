@@ -3,11 +3,13 @@ import type { Version } from '../types';
 import { existsSync, openSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { app } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import electronUpdater from 'electron-updater';
 import { isString, run } from 'utils';
 import { __require, asarTempPath, devUpdateLatestYml, getReplaceAsarExc, isDev, pkgPath, serverHost, unpackPath } from './constants';
 import { currentLogPath, localLog } from './log';
 import { checkPatchVersion, downloadPatchVersion } from './version';
+
+const { autoUpdater } = electronUpdater;
 
 let updateVersionInfo: Version;
 let isNewVersion = false;
